@@ -70,7 +70,7 @@ export const mockDatasets: (SegDataset | PanSharpeningDataset)[] = [
     status: 'Available',
     publicationLink: 'https://www.worldpop.org/methods',
     downloadLinks: [
-      { label: 'View on GitHub', url: 'https://github.com/XavierJiezou/KTDA', type: 'external', icon: 'Github' },
+      { label: 'View on GitHub', url: 'https://github.com/XavierJiezou/Cloud-Adapter', type: 'external', icon: 'Github' },
       { label: 'Download from Hugging Face', url: 'https://huggingface.co/datasets/XavierJiezou/ktda-datasets/resolve/main/cloud.zip', type: 'external', icon: 'Download' },
     ],
     sampleDataPreview: [
@@ -80,8 +80,8 @@ export const mockDatasets: (SegDataset | PanSharpeningDataset)[] = [
       { type: 'image', urlOrData: new URL('@/assets/examples/cloud_adapter/water_1.png', import.meta.url).href, caption: 'Water Land', maskUrlOrData: new URL('@/assets/examples/cloud_adapter/seg/water_1.png', import.meta.url).href },
     ],
     citation: `Tatem, A. J. (2017). WorldPop, open data for spatial demography. Scientific data, 4(1), 1-4.`,
-    article: 'KTDA',
-    article_link: 'https://arxiv.org/abs/2412.06664',
+    article: 'cloud-adapter',
+    article_link: 'hhttps://arxiv.org/abs/2411.13127',
     legend: [
       { label: 'Clear Sky', color: 'rgb(79, 253, 199)' },
       { label: 'Thick Cloud', color: 'rgb(77, 2, 115)' },
@@ -92,22 +92,30 @@ export const mockDatasets: (SegDataset | PanSharpeningDataset)[] = [
   } as SegDataset,
   {
     id: 'ds3',
-    title: 'Dynamic World Land Cover Dataset',
+    title: 'PanBench Dataset',
     authors: ['Google', 'World Resources Institute'],
-    year: '2021 (Continuously Updated)',
-    shortDescription: 'Near real-time global 10m resolution land cover data, produced using deep learning with Sentinel-2 imagery.',
-    longDescription: 'Dynamic World is a global land cover dataset offering a dynamic, near real-time view of Earth\'s surface. It leverages AI and cloud computing to classify Sentinel-2 satellite imagery into nine land cover types (water, trees, grass, flooded vegetation, crops, shrub & scrub, built area, bare ground, snow & ice). The 10m resolution data is available globally and updated frequently, enabling timely monitoring of environmental changes, agricultural patterns, and urban development.',
+    year: '2024 (Continuously Updated)',
+    shortDescription: 'PanBench is a large-scale pansharpening dataset composed of 5,898 paired multispectral and panchromatic remote sensing images, preprocessed and clipped for efficient model training and diverse scene coverage across six land cover types.',
+    longDescription: 'PanBench is a comprehensive dataset designed to support pansharpening tasks by providing 5,898 pairs of high-quality remote sensing images. Each pair consists of a four-channel (RGB + near-infrared) multispectral (MS) image at 256×256 resolution and a single-channel panchromatic (PAN) image at 1024×1024 resolution. To enhance the efficiency of data processing, large-scale raw remote sensing images were first preprocessed through radiometric calibration, atmospheric and orthometric corrections, and image alignment. These images were then clipped into smaller patches to reduce computational costs while preserving critical spatial and spectral information. Compared to datasets used in models like GPPNN, PanNet, and PGCU, PanBench features a significantly larger clipping scale, enabling models to better generalize across varied scenes. It supports sensors with differing spatial resolutions—such as LC7/LC8 with 2× downsampling and WV-2/WV-3 with 4× downsampling—standardizing MS input to four key bands (R, G, B, NIR) for cross-sensor consistency. Additionally, PanBench includes labeled scene categories (water, urban, ice/snow, crops, vegetation, and barren) based on references like DeepGlobe and Cheng et al., enabling robust evaluation across diverse application scenarios such as urban planning, land management, and disaster response.',
     abstract: 'A near real-time, 10m resolution global land cover dataset derived from Sentinel-2 imagery using AI. It provides probabilities for nine land cover classes, allowing users to create custom maps based on their needs.',
-    tags: ['Land Cover', 'Remote Sensing', 'Sentinel-2', 'Deep Learning', 'Global Monitoring', 'AI'],
+    tags: ["pansharpening",
+      "remote sensing",
+      "multispectral",
+      "panchromatic",
+      "satellite imagery",
+      "land cover classification",
+      "image fusion",
+      "high-resolution",
+      "geospatial data",
+      "earth observation"],
     imageUrl: 'https://picsum.photos/seed/dynamic-world/1200/600',
     imageAiHint: 'land cover map',
-    domain: 'Environmental Science',
+    domain: 'Geospatial Analysis',
     status: 'Available',
     publicationLink: 'https://doi.org/10.1038/s41597-022-01307-4',
     downloadLinks: [
-      { label: 'Access on Google Earth Engine', url: 'https://developers.google.com/earth-engine/datasets/catalog/GOOGLE_DYNAMICWORLD_V1', type: 'external', icon: 'Globe' },
-      { label: 'Dynamic World Website', url: 'https://dynamicworld.app/', type: 'external', icon: 'Link' },
-      { label: 'Publication in Nature Scientific Data', url: 'https://doi.org/10.1038/s41597-022-01307-4', type: 'paper', icon: 'FileText' }
+      { label: 'View on GitHub', url: 'https://github.com/XavierJiezou/Pansharpening', type: 'external', icon: 'Github' },
+      { label: 'Download from Hugging Face', url: 'https://huggingface.co/datasets/XavierJiezou/pansharpening-datasets/resolve/main/PanBench.zip', type: 'external', icon: 'Download' },
     ],
     sampleDataPreview: [
       { type: 'image', nirOrData: new URL('@/assets/examples/PanBench/GF1/nir.png', import.meta.url).href, panUrlOrData: new URL('@/assets/examples/PanBench/GF1/pan.png', import.meta.url).href, rgbUrlOrData: new URL('@/assets/examples/PanBench/GF1/rgb.png', import.meta.url).href, satellite: 'GF1' },
@@ -121,11 +129,10 @@ export const mockDatasets: (SegDataset | PanSharpeningDataset)[] = [
       { type: 'image', nirOrData: new URL('@/assets/examples/PanBench/WV2/nir.png', import.meta.url).href, panUrlOrData: new URL('@/assets/examples/PanBench/WV2/pan.png', import.meta.url).href, rgbUrlOrData: new URL('@/assets/examples/PanBench/WV2/rgb.png', import.meta.url).href, satellite: 'WV2' },
       { type: 'image', nirOrData: new URL('@/assets/examples/PanBench/WV3/nir.png', import.meta.url).href, panUrlOrData: new URL('@/assets/examples/PanBench/WV3/pan.png', import.meta.url).href, rgbUrlOrData: new URL('@/assets/examples/PanBench/WV3/rgb.png', import.meta.url).href, satellite: 'WV3' },
       { type: 'image', nirOrData: new URL('@/assets/examples/PanBench/WV4/nir.png', import.meta.url).href, panUrlOrData: new URL('@/assets/examples/PanBench/WV4/pan.png', import.meta.url).href, rgbUrlOrData: new URL('@/assets/examples/PanBench/WV4/rgb.png', import.meta.url).href, satellite: 'WV4' },
-
-
-
     ],
     citation: `Brown, C. F., et al. (2022). Dynamic World, Near real-time global 10 m land use land cover mapping. Scientific Data, 9(1), 251.`,
-    type: 'pan'
+    type: 'pan',
+    article: 'CMFNet',
+    article_link: 'https://www.mdpi.com/2072-4292/16/16/2899',
   } as PanSharpeningDataset
 ];

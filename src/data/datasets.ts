@@ -1,0 +1,131 @@
+
+import type { SegDataset, PanSharpeningDataset } from '@/types';
+
+export const mockDatasets: (SegDataset | PanSharpeningDataset)[] = [
+  {
+    id: 'ds1',
+    title: 'Fine-Grained Grass Segmentation Dataset',
+    authors: ["Qinghai University"],
+    year: '2024 (updated annually)',
+    shortDescription: 'A high-resolution grassland dataset from the Yellow River source region, offering fine-grained labels across five coverage levels to improve segmentation accuracy in complex terrains.',
+    longDescription: 'This dataset provides high-quality, fine-grained annotations for alpine grasslands in Maduo County, located in the ecologically sensitive Yellow River source region of China. Sourced from 8-meter resolution Gaofen-2 and Gaofen-6 satellite imagery captured in 2019, the dataset addresses the limitations of existing public datasets by offering more precise class distinctions. It includes 1,500 image-label pairs (256×256 pixels), labeled using the X-AnyLabeling tool and refined manually for accuracy. Grassland coverage is categorized into five levels—from low to high—based on national ecological survey standards. Designed for grass segmentation in high-altitude and complex terrain environments, this dataset is a valuable resource for remote sensing research and environmental monitoring.',
+    abstract: 'This dataset offers a comprehensive global view of mangrove ecosystems, mapping their extent and changes over time using satellite remote sensing. It is an essential resource for researchers, policymakers, and conservationists working on coastal ecosystems.',
+    tags: ["Grassland Segmentation",
+      "Remote Sensing",
+      "High-Resolution Satellite Imagery",
+      "Gaofen-2",
+      "Gaofen-6",
+      "Yellow River Source",
+      "Alpine Ecosystem",
+      "Fine-Grained Labels",
+      "Ecological Monitoring",
+      "Land Cover Classification"],
+    imageUrl: 'https://picsum.photos/seed/mangrove-dataset/1200/600',
+    imageAiHint: 'mangrove forest aerial',
+    domain: 'Remote Sensing and Ecological Monitoring',
+    status: 'Available',
+    publicationLink: 'https://www.mdpi.com/2072-4292/10/10/1615',
+    downloadLinks: [
+      { label: 'View on GitHub', url: 'https://github.com/XavierJiezou/KTDA', type: 'external', icon: 'Github' },
+      { label: 'Download from Hugging Face', url: 'https://huggingface.co/datasets/XavierJiezou/ktda-datasets/resolve/main/grass.zip', type: 'external', icon: 'Download' },
+    ],
+    sampleDataPreview: [
+      { type: 'image', urlOrData: new URL('@/assets/examples/ktda/4.png', import.meta.url).href, caption: '', maskUrlOrData: new URL('@/assets/examples/ktda/seg/4.png', import.meta.url).href },
+      { type: 'image', urlOrData: new URL('@/assets/examples/ktda/5.png', import.meta.url).href, caption: '', maskUrlOrData: new URL('@/assets/examples/ktda/seg/5.png', import.meta.url).href },
+      { type: 'image', urlOrData: new URL('@/assets/examples/ktda/13.png', import.meta.url).href, caption: '', maskUrlOrData: new URL('@/assets/examples/ktda/seg/13.png', import.meta.url).href },
+      { type: 'image', urlOrData: new URL('@/assets/examples/ktda/26.png', import.meta.url).href, caption: '', maskUrlOrData: new URL('@/assets/examples/ktda/seg/26.png', import.meta.url).href },
+    ],
+    citation: `Bunting, P.; Rosenqvist, A.; Lucas, R.; Rebelo, L.-M.; Hilarides, L.; Thomas, N.; Hardy, A.; Itoh, T.; Shimada, M.; Finlayson, C.M. The Global Mangrove Watch—A New 2010 Global Baseline of Mangrove Extent. Remote Sens. 2018, 10, 1615.`,
+    article: 'KTDA',
+    article_link: 'https://arxiv.org/abs/2412.06664',
+    legend: [
+      { label: 'Low', color: 'rgb(185, 101, 71)' },
+      { label: 'Middle Low', color: 'rgb(248, 202, 155)' },
+      { label: 'Middle', color: 'rgb(211, 232, 158)' },
+      { label: 'Middle High', color: 'rgb(138, 191, 104)' },
+      { label: 'High', color: 'rgb(92, 144, 77)' }
+    ],
+    type: 'seg'
+  } as SegDataset,
+  {
+    id: 'ds2',
+    title: 'Fine-Grained Cloud Segmentation',
+    authors: ['WorldPop, University of Southampton', 'Flowminder Foundation'],
+    year: '2024 (with annual updates)',
+    shortDescription: 'A curated Landsat 8 dataset with pixel-level cloud annotations, designed for fine-grained cloud segmentation across diverse terrain and biomes.',
+    longDescription: 'This dataset contains 96 terrain-corrected (Level-1T) scenes acquired from Landsat 8 OLI and TIRS sensors, covering a wide range of natural biomes. It is specifically curated to support cloud detection and removal tasks in complex environmental conditions. Each image has been manually annotated to provide pixel-level cloud masks, distinguishing cloud shadow, clear sky, thin clouds, and dense cloud areas. The scenes have been preprocessed into 512×512 pixel patches and partitioned into training, validation, and test subsets in a 6:2:2 ratio. This dataset serves as a high-quality benchmark for developing and evaluating fine-grained cloud segmentation models in remote sensing applications.',
+    abstract: 'Spatially explicit demographic data at a fine scale, providing estimates of human population distribution globally. These datasets are critical for a wide range of applications requiring detailed population information.',
+    tags: ["Cloud Segmentation",
+      "Remote Sensing",
+      "Landsat 8",
+      "Pixel-Level Annotation",
+      "Multispectral Imagery",
+      "Cloud Detection",
+      "Cloud Shadow",
+      "Thin Cloud Recognition",
+      "Terrain-Corrected Scenes"],
+    imageUrl: 'https://picsum.photos/seed/worldpop-dataset/1200/600',
+    imageAiHint: 'population density map',
+    domain: 'Remote Sensing and Atmospheric Analysis',
+    status: 'Available',
+    publicationLink: 'https://www.worldpop.org/methods',
+    downloadLinks: [
+      { label: 'View on GitHub', url: 'https://github.com/XavierJiezou/KTDA', type: 'external', icon: 'Github' },
+      { label: 'Download from Hugging Face', url: 'https://huggingface.co/datasets/XavierJiezou/ktda-datasets/resolve/main/cloud.zip', type: 'external', icon: 'Download' },
+    ],
+    sampleDataPreview: [
+      { type: 'image', urlOrData: new URL('@/assets/examples/cloud_adapter/barren_1.png', import.meta.url).href, caption: 'Barren Land', maskUrlOrData: new URL('@/assets/examples/cloud_adapter/seg/barren_1.png', import.meta.url).href },
+      { type: 'image', urlOrData: new URL('@/assets/examples/cloud_adapter/barren_2.png', import.meta.url).href, caption: 'Barren Land', maskUrlOrData: new URL('@/assets/examples/cloud_adapter/seg/barren_2.png', import.meta.url).href },
+      { type: 'image', urlOrData: new URL('@/assets/examples/cloud_adapter/barren_3.png', import.meta.url).href, caption: 'Barren Land', maskUrlOrData: new URL('@/assets/examples/cloud_adapter/seg/barren_3.png', import.meta.url).href },
+      { type: 'image', urlOrData: new URL('@/assets/examples/cloud_adapter/water_1.png', import.meta.url).href, caption: 'Water Land', maskUrlOrData: new URL('@/assets/examples/cloud_adapter/seg/water_1.png', import.meta.url).href },
+    ],
+    citation: `Tatem, A. J. (2017). WorldPop, open data for spatial demography. Scientific data, 4(1), 1-4.`,
+    article: 'KTDA',
+    article_link: 'https://arxiv.org/abs/2412.06664',
+    legend: [
+      { label: 'Clear Sky', color: 'rgb(79, 253, 199)' },
+      { label: 'Thick Cloud', color: 'rgb(77, 2, 115)' },
+      { label: 'Thin Cloud', color: 'rgb(251, 255, 41)' },
+      { label: 'Cloud Shadow', color: 'rgb(221, 53, 223)' }
+    ],
+    type: 'seg'
+  } as SegDataset,
+  {
+    id: 'ds3',
+    title: 'Dynamic World Land Cover Dataset',
+    authors: ['Google', 'World Resources Institute'],
+    year: '2021 (Continuously Updated)',
+    shortDescription: 'Near real-time global 10m resolution land cover data, produced using deep learning with Sentinel-2 imagery.',
+    longDescription: 'Dynamic World is a global land cover dataset offering a dynamic, near real-time view of Earth\'s surface. It leverages AI and cloud computing to classify Sentinel-2 satellite imagery into nine land cover types (water, trees, grass, flooded vegetation, crops, shrub & scrub, built area, bare ground, snow & ice). The 10m resolution data is available globally and updated frequently, enabling timely monitoring of environmental changes, agricultural patterns, and urban development.',
+    abstract: 'A near real-time, 10m resolution global land cover dataset derived from Sentinel-2 imagery using AI. It provides probabilities for nine land cover classes, allowing users to create custom maps based on their needs.',
+    tags: ['Land Cover', 'Remote Sensing', 'Sentinel-2', 'Deep Learning', 'Global Monitoring', 'AI'],
+    imageUrl: 'https://picsum.photos/seed/dynamic-world/1200/600',
+    imageAiHint: 'land cover map',
+    domain: 'Environmental Science',
+    status: 'Available',
+    publicationLink: 'https://doi.org/10.1038/s41597-022-01307-4',
+    downloadLinks: [
+      { label: 'Access on Google Earth Engine', url: 'https://developers.google.com/earth-engine/datasets/catalog/GOOGLE_DYNAMICWORLD_V1', type: 'external', icon: 'Globe' },
+      { label: 'Dynamic World Website', url: 'https://dynamicworld.app/', type: 'external', icon: 'Link' },
+      { label: 'Publication in Nature Scientific Data', url: 'https://doi.org/10.1038/s41597-022-01307-4', type: 'paper', icon: 'FileText' }
+    ],
+    sampleDataPreview: [
+      { type: 'image', nirOrData: new URL('@/assets/examples/PanBench/GF1/nir.png', import.meta.url).href, panUrlOrData: new URL('@/assets/examples/PanBench/GF1/pan.png', import.meta.url).href, rgbUrlOrData: new URL('@/assets/examples/PanBench/GF1/rgb.png', import.meta.url).href, satellite: 'GF1' },
+      { type: 'image', nirOrData: new URL('@/assets/examples/PanBench/GF2/nir.png', import.meta.url).href, panUrlOrData: new URL('@/assets/examples/PanBench/GF2/pan.png', import.meta.url).href, rgbUrlOrData: new URL('@/assets/examples/PanBench/GF2/rgb.png', import.meta.url).href, satellite: 'GF2' },
+
+      { type: 'image', nirOrData: new URL('@/assets/examples/PanBench/GF6/nir.png', import.meta.url).href, panUrlOrData: new URL('@/assets/examples/PanBench/GF6/pan.png', import.meta.url).href, rgbUrlOrData: new URL('@/assets/examples/PanBench/GF6/rgb.png', import.meta.url).href, satellite: 'GF6' },
+      { type: 'image', nirOrData: new URL('@/assets/examples/PanBench/IN/nir.png', import.meta.url).href, panUrlOrData: new URL('@/assets/examples/PanBench/IN/pan.png', import.meta.url).href, rgbUrlOrData: new URL('@/assets/examples/PanBench/IN/rgb.png', import.meta.url).href, satellite: 'IN' },
+      { type: 'image', nirOrData: new URL('@/assets/examples/PanBench/LC7/nir.png', import.meta.url).href, panUrlOrData: new URL('@/assets/examples/PanBench/LC7/pan.png', import.meta.url).href, rgbUrlOrData: new URL('@/assets/examples/PanBench/LC7/rgb.png', import.meta.url).href, satellite: 'LC7' },
+      { type: 'image', nirOrData: new URL('@/assets/examples/PanBench/LC8/nir.png', import.meta.url).href, panUrlOrData: new URL('@/assets/examples/PanBench/LC8/pan.png', import.meta.url).href, rgbUrlOrData: new URL('@/assets/examples/PanBench/LC8/rgb.png', import.meta.url).href, satellite: 'LC8' },
+      { type: 'image', nirOrData: new URL('@/assets/examples/PanBench/QB/nir.png', import.meta.url).href, panUrlOrData: new URL('@/assets/examples/PanBench/QB/pan.png', import.meta.url).href, rgbUrlOrData: new URL('@/assets/examples/PanBench/QB/rgb.png', import.meta.url).href, satellite: 'QB' },
+      { type: 'image', nirOrData: new URL('@/assets/examples/PanBench/WV2/nir.png', import.meta.url).href, panUrlOrData: new URL('@/assets/examples/PanBench/WV2/pan.png', import.meta.url).href, rgbUrlOrData: new URL('@/assets/examples/PanBench/WV2/rgb.png', import.meta.url).href, satellite: 'WV2' },
+      { type: 'image', nirOrData: new URL('@/assets/examples/PanBench/WV3/nir.png', import.meta.url).href, panUrlOrData: new URL('@/assets/examples/PanBench/WV3/pan.png', import.meta.url).href, rgbUrlOrData: new URL('@/assets/examples/PanBench/WV3/rgb.png', import.meta.url).href, satellite: 'WV3' },
+      { type: 'image', nirOrData: new URL('@/assets/examples/PanBench/WV4/nir.png', import.meta.url).href, panUrlOrData: new URL('@/assets/examples/PanBench/WV4/pan.png', import.meta.url).href, rgbUrlOrData: new URL('@/assets/examples/PanBench/WV4/rgb.png', import.meta.url).href, satellite: 'WV4' },
+
+
+
+    ],
+    citation: `Brown, C. F., et al. (2022). Dynamic World, Near real-time global 10 m land use land cover mapping. Scientific Data, 9(1), 251.`,
+    type: 'pan'
+  } as PanSharpeningDataset
+];

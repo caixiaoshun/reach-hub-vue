@@ -15,12 +15,25 @@
           <div class="absolute inset-0 bg-gradient-to-t from-black/50 via-transparent to-black/10"></div>
         </div>
 
+
+
+
+
         <!-- Main Content Grid -->
         <div class="grid grid-cols-1 lg:grid-cols-3 gap-8 lg:gap-12">
           <!-- Left Column / Main Content -->
           <div class="lg:col-span-2 space-y-8">
             <!-- Title and Subtitle -->
             <div>
+              <div class="mb-4">
+                <RouterLink to="/projects">
+                  <Button variant="default" size="sm"
+                    class="flex items-center space-x-1 shadow-xl hover:shadow-2xl hover:scale-105 transition-all bg-primary text-primary-foreground rounded-full px-4 py-2">
+                    <ArrowLeft class="w-4 h-4" />
+                    <span>Back All Projects</span>
+                  </Button>
+                </RouterLink>
+              </div>
               <h1 class="text-3xl md:text-4xl font-bold text-foreground mb-2">
                 {{ project.title }}
               </h1>

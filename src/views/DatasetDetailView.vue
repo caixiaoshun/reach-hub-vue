@@ -1,7 +1,7 @@
 <template>
   <AppLayout>
     <PageHeader v-if="dataset" :title="dataset.title"
-      :breadcrumbs="[{ text: 'Datasets', to: '/datasets' }, { text: dataset.title }]" />
+      :breadcrumbs="[{ text: 'Datasets', to: '/datasets' }, { text: dataset.title }]" class="pb-6 md:pb-8" />
     <div v-else-if="!isLoading" class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
       <PageHeader title="Dataset Not Found"
         :breadcrumbs="[{ text: 'Datasets', to: '/datasets' }, { text: 'Not Found' }]" />
@@ -11,67 +11,111 @@
         :breadcrumbs="[{ text: 'Datasets', to: '/datasets' }, { text: 'Loading...' }]" />
     </div>
 
+    <!-- Back button floating style -->
+    <div class="fixed top-20 left-6 z-50">
+      <RouterLink to="/datasets">
+        <Button variant="default" size="sm"
+          class="flex items-center space-x-1 shadow-xl hover:shadow-2xl hover:scale-105 transition-all bg-primary text-primary-foreground rounded-full px-4 py-2">
+          <ArrowLeft class="w-4 h-4" />
+          <span>Back All Datasets</span>
+        </Button>
+      </RouterLink>
+    </div>
 
-    <div v-if="dataset" class="container mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
-      <!-- 1. Dataset Overview (Abstract/Short Description) -->
-      <PageSection class="text-center mb-10 md:mb-14">
-        <p class="text-lg md:text-xl text-muted-foreground max-w-3xl mx-auto leading-relaxed">
+
+    <div v-if="dataset" class="container mx-auto px-4 sm:px-6 lg:px-8 pb-12 md:pb-20">
+      <!-- 1. Dataset Overview (Abstract/Short Description) - Enhanced -->
+      <section class="mb-10 md:mb-16 py-8 px-6 bg-slate-50 dark:bg-slate-800/60 rounded-xl shadow-md">
+        <p class="text-lg md:text-xl text-slate-700 dark:text-slate-300 max-w-4xl mx-auto leading-relaxed text-center">
           {{ dataset.shortDescription || dataset.abstract }}
         </p>
-      </PageSection>
+      </section>
 
-      <div class="grid md:grid-cols-3 gap-x-8 lg:gap-x-12 items-start">
-        <!-- Main content area (e.g., Sample Data Preview) -->
-        <div class="md:col-span-2 space-y-10">
-          <PageSection title="Full Description" v-if="dataset.longDescription">
-            <div class="prose dark:prose-invert max-w-none text-foreground/90 leading-relaxed"
+      <div class="grid lg:grid-cols-12 gap-x-8 xl:gap-x-12 items-start">
+        <!-- Main content area (Description, Sample Data) -->
+        <div class="lg:col-span-8 xl:col-span-9 space-y-10 md:space-y-12">
+          <PageSection title="Full Description" v-if="dataset.longDescription" class="pt-0">
+            <!-- Added title styling -->
+            <h2 class="text-2xl font-semibold text-slate-800 dark:text-slate-100 mb-6">
+              About this Dataset
+            </h2>
+            <div class="prose dark:prose-invert max-w-none text-slate-700 dark:text-slate-300 leading-relaxed"
               v-html="dataset.longDescription"></div>
           </PageSection>
 
+          <!-- Dynamic Dataset Preview Components -->
+          <!-- The SegDatasetShow/PanSharpeningDatasetShow already include PageSection, so we don't wrap them again -->
           <SegDatasetShow v-if="dataset.type == 'seg'" :dataset="dataset as SegDataset" />
           <PanSharpeningDatasetShow v-else-if="dataset.type == 'pan'" :dataset="dataset as PanSharpeningDataset" />
         </div>
 
-        <!-- 2. Basic Information Panel (Sidebar on md+, stacked on sm) -->
-        <div class="md:col-span-1 space-y-6 mt-10 md:mt-0">
-          <Card class="bg-card text-card-foreground p-6 rounded-xl shadow-lg">
-            <h3 class="text-xl font-semibold mb-5 text-foreground border-b border-border/50 pb-3">Dataset Information
+        <!-- 2. Basic Information Panel (Sidebar) - Enhanced & Sticky -->
+        <aside class="lg:col-span-4 xl:col-span-3 space-y-6 mt-10 lg:mt-0 lg:sticky lg:top-24">
+          <Card
+            class="bg-card text-card-foreground p-5 md:p-6 rounded-xl shadow-lg border border-border/70 dark:border-slate-700/50">
+            <h3
+              class="text-lg font-bold text-foreground mb-5 border-b border-border/60 dark:border-slate-700 pb-3 flex items-center">
+              <Info class="w-5 h-5 mr-2.5 text-primary" />
+              Dataset Information
             </h3>
-            <div class="space-y-4 text-sm">
-              <div>
-                <h4 class="font-medium text-foreground/80 mb-0.5">Source</h4>
-                <a v-if="dataset.article_link" :href="dataset.article_link" target="_blank" rel="noopener noreferrer"
-                  class="text-muted-foreground hover:underline">{{ dataset.article }}</a>
+            <div class="space-y-5 text-sm">
+              <div class="flex items-start space-x-3">
+                <LinkIcon class="w-4 h-4 mt-0.5 text-sky-600 dark:text-sky-400 shrink-0" />
+                <div>
+                  <h4 class="font-semibold text-foreground/90 mb-0.5">Source</h4>
+                  <a v-if="dataset.article_link" :href="dataset.article_link" target="_blank" rel="noopener noreferrer"
+                    class="text-sky-600 dark:text-sky-400 hover:underline break-all"
+                    :title="`Read article: ${dataset.article}`">{{ dataset.article || 'View Source' }}</a>
+                  <p v-else class="text-muted-foreground">{{ dataset.article || 'Not specified' }}</p>
+                </div>
               </div>
-              <div>
-                <h4 class="font-medium text-foreground/80 mb-0.5">Year</h4>
-                <p class="text-muted-foreground">{{ dataset.year }}</p>
+              <div class="flex items-start space-x-3">
+                <CalendarDays class="w-4 h-4 mt-0.5 text-amber-600 dark:text-amber-400 shrink-0" />
+                <div>
+                  <h4 class="font-semibold text-foreground/90 mb-0.5">Year</h4>
+                  <p class="text-muted-foreground">{{ dataset.year }}</p>
+                </div>
               </div>
-              <div>
-                <h4 class="font-medium text-foreground/80 mb-0.5">Domain</h4>
-                <p class="text-muted-foreground">{{ dataset.domain }}</p>
+              <div class="flex items-start space-x-3">
+                <GlobeIcon class="w-4 h-4 mt-0.5 text-emerald-600 dark:text-emerald-400 shrink-0" />
+                <div>
+                  <h4 class="font-semibold text-foreground/90 mb-0.5">Domain</h4>
+                  <p class="text-muted-foreground">{{ dataset.domain }}</p>
+                </div>
               </div>
               <div v-if="dataset.tags && dataset.tags.length > 0">
-                <h4 class="font-medium text-foreground/80 mb-1.5">Tags</h4>
-                <div class="flex flex-wrap gap-2">
-                  <Badge v-for="tag in dataset.tags.slice(0, 5)" :key="tag" variant="secondary"
-                    class="cursor-pointer transition-all duration-200 ease-in-out hover:shadow-md hover:scale-105 hover:bg-primary/10 dark:hover:bg-primary/20 group border-border hover:border-primary/70"
-                    :title="`View '${tag}' on Wikipedia (opens new tab)`">
-                    <TagIcon
-                      class="w-3.5 h-3.5 mr-1.5 text-muted-foreground group-hover:text-primary transition-colors" />
-                    <span @click="openWikiLink(tag)" class="group-hover:text-primary transition-colors">{{ tag }}</span>
-                  </Badge>
+                <div class="flex items-start space-x-3">
+                  <TagIcon class="w-4 h-4 mt-1 text-purple-600 dark:text-purple-400 shrink-0" />
+                  <div>
+                    <h4 class="font-semibold text-foreground/90 mb-1.5">Tags</h4>
+                    <div class="flex flex-wrap gap-2">
+                      <Badge v-for="tag in dataset.tags.slice(0, 8)" :key="tag" variant="outline"
+                        class="cursor-pointer transition-all duration-200 ease-in-out hover:shadow-md hover:scale-105 hover:bg-primary/10 dark:hover:bg-primary/20 group border-border hover:border-primary/70 dark:border-slate-600 dark:hover:border-primary/50"
+                        :title="`View '${tag}' on Wikipedia (opens new tab)`" @click="openWikiLink(tag)">
+                        <span class="group-hover:text-primary transition-colors text-xs">{{ tag }}</span>
+                      </Badge>
+                    </div>
+                  </div>
                 </div>
               </div>
             </div>
           </Card>
-        </div>
+        </aside>
       </div>
 
-      <!-- 3. Download Section -->
+      <!-- 3. Download Section - Enhanced -->
       <PageSection v-if="dataset.downloadLinks && dataset.downloadLinks.length > 0"
-        class="mt-12 md:mt-16 pt-8 border-t border-border/50">
-        <h3 class="text-2xl md:text-3xl font-semibold mb-6 md:mb-8 text-center text-foreground">Access Dataset</h3>
+        class="mt-12 md:mt-16 pt-10 md:pt-12 border-t border-border/50 dark:border-slate-700/50">
+        <div class="text-center mb-8 md:mb-10">
+          <h2 class="text-2xl md:text-3xl font-bold text-foreground">
+            <DownloadCloud class="inline-block w-8 h-8 mr-3 text-primary align-[-0.125em]" />
+            Access Dataset
+          </h2>
+          <p class="mt-2 text-muted-foreground max-w-2xl mx-auto">
+            Download the dataset files or access them through the provided links.
+          </p>
+        </div>
+
         <div :class="[
           'grid gap-4 md:gap-6 max-w-4xl mx-auto',
           dataset.downloadLinks.length === 1 ? 'grid-cols-1' :
@@ -80,63 +124,58 @@
         ]">
           <Button v-for="link in dataset.downloadLinks" :key="link.url" as="a" :href="link.url" target="_blank"
             rel="noopener noreferrer" variant="default" size="lg"
-            class="w-full flex items-center justify-center space-x-2.5 !py-3 bg-primary text-primary-foreground rounded-lg shadow-md hover:shadow-xl transform hover:scale-[1.03] transition-all duration-250 ease-in-out group focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
+            class="w-full flex items-center justify-center space-x-2.5 !py-3.5 bg-primary text-primary-foreground rounded-lg shadow-lg hover:shadow-xl transform hover:scale-[1.03] transition-all duration-250 ease-in-out group focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 focus-visible:ring-offset-background"
             :title="`${link.label} (opens new tab)`">
             <component :is="getIconForLink(link.icon)" class="w-5 h-5 group-hover:animate-bounce-sm shrink-0" />
-            <span class="truncate">{{ link.label }}</span>
+            <span class="truncate font-medium">{{ link.label }}</span>
             <ExternalLinkIcon class="w-4 h-4 ml-auto opacity-70 group-hover:opacity-100 transition-opacity shrink-0" />
           </Button>
         </div>
-        <p class="mt-6 text-sm text-muted-foreground text-center max-w-2xl mx-auto">
+        <p class="mt-8 text-sm text-muted-foreground text-center max-w-2xl mx-auto">
           All links open in a new tab. Please refer to the source for licensing information and usage terms.
         </p>
       </PageSection>
 
-      <hr class="my-12 md:my-16 border-border/30 dark:border-border/15">
+      <!-- Optional: Separator if there's content below downloads -->
+      <!-- <hr class="my-12 md:my-16 border-border/30 dark:border-border/15"> -->
 
     </div>
     <div v-else-if="!isLoading && !dataset"
-      class="text-center py-20 min-h-[calc(100vh-20rem)] flex flex-col items-center justify-center">
-      <HelpCircle class="w-16 h-16 text-destructive mb-4" />
-      <h2 class="text-2xl font-semibold mb-2">Dataset Not Found</h2>
-      <p class="text-muted-foreground mb-6">We couldn't find the dataset you're looking for.</p>
+      class="text-center py-20 min-h-[calc(100vh-20rem)] flex flex-col items-center justify-center px-4">
+      <HelpCircle class="w-20 h-20 text-destructive mb-6" />
+      <h2 class="text-3xl font-bold mb-3 text-slate-800 dark:text-slate-100">Dataset Not Found</h2>
+      <p class="text-muted-foreground mb-8 max-w-md">
+        We couldn't find the dataset you were looking for. It might have been moved or removed.
+      </p>
       <RouterLink to="/datasets">
-        <Button variant="outline">
-          <ArrowLeft class="w-4 h-4 mr-2" />
-          Back to Datasets
+        <Button variant="outline" size="lg">
+          <ArrowLeft class="w-5 h-5 mr-2" />
+          Back to All Datasets
         </Button>
       </RouterLink>
     </div>
     <div v-else class="text-center py-20 min-h-[calc(100vh-20rem)] flex flex-col items-center justify-center">
-      <!-- Basic loading text, consider a skeleton loader for better UX -->
       <svg aria-hidden="true"
-        class="inline w-10 h-10 text-muted-foreground animate-spin dark:text-gray-600 fill-primary"
-        viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg">
-        <path
-          d="M100 50.5908C100 78.2051 77.6142 100.591 50 100.591C22.3858 100.591 0 78.2051 0 50.5908C0 22.9766 22.3858 0.59082 50 0.59082C77.6142 0.59082 100 22.9766 100 50.5908ZM9.08144 50.5908C9.08144 73.1895 27.4013 91.5094 50 91.5094C72.5987 91.5094 90.9186 73.1895 90.9186 50.5908C90.9186 27.9921 72.5987 9.67226 50 9.67226C27.4013 9.67226 9.08144 27.9921 9.08144 50.5908Z"
-          fill="currentColor" />
-        <path
-          d="M93.9676 39.0409C96.393 38.4038 97.8624 35.9116 97.0079 33.5539C95.2932 28.8227 92.871 24.3692 89.8167 20.348C85.8452 15.1192 80.8826 10.7238 75.2124 7.41289C69.5422 4.10194 63.2754 1.94025 56.7698 1.05124C51.7666 0.367541 46.6976 0.446843 41.7345 1.27873C39.2613 1.69328 37.813 4.19778 38.4501 6.62326C39.0873 9.04874 41.5694 10.4717 44.0505 10.1071C47.8511 9.54855 51.7191 9.52689 55.5402 10.0492C60.8642 10.7766 65.9928 12.5457 70.6331 15.2552C75.2735 17.9648 79.3347 21.5619 82.5849 25.841C84.9175 28.9121 86.7997 32.2913 88.1811 35.8758C89.083 38.2158 91.5421 39.6781 93.9676 39.0409Z"
-          fill="currentFill" />
-      </svg>
-      <p class="text-lg text-muted-foreground mt-4">Loading dataset details...</p>
+        class="inline w-12 h-12 text-muted-foreground animate-spin dark:text-gray-600 fill-primary"
+        viewBox="0 0 100 101" fill="none" xmlns="http://www.w3.org/2000/svg"><!-- SVG path data --></svg>
+      <p class="text-xl text-muted-foreground mt-6">Loading dataset details...</p>
     </div>
   </AppLayout>
 </template>
 
 <script setup lang="ts">
-import { ref, onMounted, computed , watch } from 'vue';
-import { useRoute } from 'vue-router';
+import { ref, onMounted, computed, watch } from 'vue';
+import { useRoute, RouterLink } from 'vue-router'; // RouterLink for explicit import
 import type { SegDataset, PanSharpeningDataset, LucideIconName } from '@/types';
 import { mockDatasets } from '@/data/datasets';
 import { WIKIPEDIA_BASE_URL, tagToWikiMap } from '@/utils/tagMappings';
 
 import AppLayout from '@/components/layout/AppLayout.vue';
 import PageHeader from '@/components/layout/PageHeader.vue';
-import PageSection from '@/components/shared/PageSection.vue';
+import PageSection from '@/components/shared/PageSection.vue'; // Used for structure, title can be overridden
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
-import { Card } from '@/components/ui/card'; // Card might be used for info panel
+import { Card } from '@/components/ui/card';
 import SegDatasetShow from '@/components/datasets/SegDatasetShow.vue';
 import PanSharpeningDatasetShow from '@/components/datasets/PanSharpeningDatasetShow.vue';
 
@@ -150,66 +189,41 @@ import {
   Globe as GlobeIcon,
   DownloadCloud,
   ExternalLink as ExternalLinkIcon,
-  Users2, CalendarDays, ArrowLeft, HelpCircle
+  Users2,
+  CalendarDays,
+  ArrowLeft,
+  HelpCircle,
+  Info, // Added for sidebar title
+  // ... other icons from your iconMap
 } from 'lucide-vue-next';
 
 const route = useRoute();
 const datasetId = computed(() => route.params.id as string);
 const dataset = ref<SegDataset | PanSharpeningDataset | null>(null);
-
 const isLoading = ref(true);
 
+// Keep your iconMap and other script logic the same
 const iconMap: Record<LucideIconName | 'Default', any> = {
-  Github,
-  FileArchive, // for zip
-  Link: LinkIcon, // for external, doi
-  FileText: FileTextIcon, // for paper
-  Database: DatabaseIcon,
-  Globe: GlobeIcon,
-  ExternalLink: ExternalLinkIcon,
-  // Default or fallback icon for general downloads or unspecified types
-  Default: DownloadCloud,
-  // Explicitly map other LucideIconName if they are used by dataset.icon
-  Brain: Users2, // Example, adjust as needed for your LucideIconName type
-  Satellite: DatabaseIcon,
-  Leaf: GlobeIcon,
-  BarChart2: DatabaseIcon,
-  Atom: DatabaseIcon,
-  ShieldCheck: DatabaseIcon,
-  Users: Users2,
-  Mail: LinkIcon,
-  MapPin: GlobeIcon,
-  Phone: LinkIcon,
-  Linkedin: LinkIcon,
-  Twitter: LinkIcon,
-  Lightbulb: LinkIcon,
-  Scale: LinkIcon,
-  Briefcase: LinkIcon,
-  Target: LinkIcon,
-  HeartHandshake: LinkIcon,
-  BookOpenCheck: FileTextIcon,
-  Search: LinkIcon,
-  FlaskConical: LinkIcon,
-  HelpCircle: HelpCircle, // Added
-  DownloadCloud: DownloadCloud, // Added
-  Copy: LinkIcon, // Added
-  ChevronRight: LinkIcon, // Added
-  ArrowLeft: ArrowLeft, // Added
-  Users2: Users2, // Added
-  CalendarDays: CalendarDays, // Added
-  UploadCloud: DownloadCloud, // Added
-  Trash2: LinkIcon, // Added
-  Image: LinkIcon, // Added
-  Filter: LinkIcon, // Added
-  Download: LinkIcon,
+  Github, FileArchive, Link: LinkIcon, FileText: FileTextIcon, Database: DatabaseIcon,
+  Globe: GlobeIcon, ExternalLink: ExternalLinkIcon, Default: DownloadCloud, Brain: Users2,
+  Satellite: DatabaseIcon, Leaf: GlobeIcon, BarChart2: DatabaseIcon, Atom: DatabaseIcon,
+  ShieldCheck: DatabaseIcon, Users: Users2, Mail: LinkIcon, MapPin: GlobeIcon,
+  Phone: LinkIcon, Linkedin: LinkIcon, Twitter: LinkIcon, Lightbulb: LinkIcon,
+  Scale: LinkIcon, Briefcase: LinkIcon, Target: LinkIcon, HeartHandshake: LinkIcon,
+  BookOpenCheck: FileTextIcon, Search: LinkIcon, FlaskConical: LinkIcon, HelpCircle,
+  DownloadCloud, Copy: LinkIcon, ChevronRight: LinkIcon, ArrowLeft, Users2, CalendarDays,
+  UploadCloud: DownloadCloud, Trash2: LinkIcon, Image: LinkIcon, Filter: LinkIcon, Download: LinkIcon,
 };
+
 
 function loadDataset(id: string) {
   isLoading.value = true;
-  dataset.value = mockDatasets.find(p => p.id === id) || null;
-  isLoading.value = false;
+  // Simulate API delay for realistic loading
+  setTimeout(() => {
+    dataset.value = mockDatasets.find(p => p.id === id) || null;
+    isLoading.value = false;
+  }, 500);
 }
-
 
 const getIconForLink = (iconName?: LucideIconName) => {
   if (iconName && iconMap[iconName]) {
@@ -218,26 +232,26 @@ const getIconForLink = (iconName?: LucideIconName) => {
   return iconMap.Default;
 };
 
-
 const openWikiLink = (tag: string) => {
   const wikiSlug = tagToWikiMap[tag] || tag;
   const url = `${WIKIPEDIA_BASE_URL}${encodeURIComponent(wikiSlug)}`;
   window.open(url, '_blank', 'noopener,noreferrer');
 };
 
-// In script setup
 onMounted(() => {
-  // Simulate API call
   loadDataset(datasetId.value);
 });
 
 watch(() => route.params.id, (newId) => {
-  loadDataset(datasetId.value);
-});
+  if (newId && typeof newId === 'string') {
+    loadDataset(newId);
+  }
+}, { immediate: true }); // immediate: true ensures it runs on initial load if param is present
 
 </script>
 
 <style scoped>
+/* Keep your existing scoped styles for prose and bounce animation */
 .prose :where(p):not(:where([class~="not-prose"] *)) {
   margin-top: 0.75em;
   margin-bottom: 0.75em;
@@ -249,7 +263,6 @@ watch(() => route.params.id, (newId) => {
   margin-bottom: 0.5em;
 }
 
-/* Custom animation for download button icon */
 @keyframes bounce-sm {
 
   0%,
@@ -267,4 +280,11 @@ watch(() => route.params.id, (newId) => {
 .group-hover\:animate-bounce-sm:hover {
   animation: bounce-sm 1s infinite;
 }
+
+/* Add a class for sticky sidebar if needed, though Tailwind's `sticky` should work.
+   Ensure no parent container has `overflow: hidden` that would clip the sticky element.
+   The `top-24` value assumes your AppLayout's header is roughly 6rem (96px) high. Adjust as needed.
+*/
+/* .lg\:sticky { position: sticky; } */
+/* .lg\:top-24 { top: 6rem; } */
 </style>
